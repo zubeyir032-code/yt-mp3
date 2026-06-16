@@ -1,13 +1,19 @@
-FROM node:20-slim
+FROM node:20-bookworm
 
-RUN apt-get update && apt-get install -y ffmpeg python3 python3-pip && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq && apt-get install -y -qq python3 python3-pip curl xz-utils && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --break-system-packages yt-dlp spotapi
+# FFmpeg static binary (johnvansickle.com)
+RUN curl -sL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar xJ && \
+    cp ffmpeg-*-amd64-static/ffmpeg /usr/local/bin/ && \
+    cp ffmpeg-*-amd64-static/ffprobe /usr/local/bin/ && \
+    rm -rf ffmpeg-*-amd64-static
+
+RUN pip3 install --break-system-packages yt-dlp spotapi --quiet
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --production
+RUN npm install --production --quiet
 
 COPY . .
 
