@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: yt-mp3
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
