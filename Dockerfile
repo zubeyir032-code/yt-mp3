@@ -15,7 +15,7 @@ RUN npm install --production
 
 COPY . .
 
-RUN mkdir -p /app/public && mv /app/index.html /app/public/ && mv /app/icon.svg /app/public/ && mv /app/manifest.json /app/public/ && mkdir -p downloads
+RUN mkdir -p downloads
 
 ENV PORT=3000
 EXPOSE 3000
