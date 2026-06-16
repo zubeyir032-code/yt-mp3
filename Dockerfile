@@ -1,16 +1,8 @@
-FROM alpine:3.21
+FROM node:20-slim
 
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repositories
+RUN apt-get update && apt-get install -y ffmpeg python3 python3-pip && rm -rf /var/lib/apt/lists/*
 
-RUN apk update
-
-RUN apk add nodejs npm yt-dlp python3 py3-pip ffmpeg
-
-RUN rm -rf /var/cache/apk/*
-
-RUN yt-dlp --version && ffmpeg -version | head -1
-
-RUN pip3 install --break-system-packages spotapi
+RUN pip3 install --break-system-packages yt-dlp spotapi
 
 WORKDIR /app
 
