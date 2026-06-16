@@ -554,7 +554,7 @@ app.listen(PORT, '0.0.0.0', () => {
   // Bağımlılık kontrolleri
   const deps = [
     ['yt-dlp', null, 'YouTube indirici'],
-    ['ffmpeg', null, 'Ses/video dönüştürücü'],
+        ['/usr/bin/ffmpeg', null, 'Ses/video dönüştürücü'],
     ['python3', ['--version'], 'Python (Spotify için)'],
   ];
   for (const [cmd, args, label] of deps) {
