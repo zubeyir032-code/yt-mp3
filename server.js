@@ -253,7 +253,8 @@ app.post('/api/download', (req, res) => {
     ytArgs.unshift('-f', 'bestvideo[height<=720]+bestaudio/best[height<=720]', '--merge-output-format', 'mp4',
       '--concurrent-fragments', '5');
   } else {
-    ytArgs.unshift('-x', '--audio-format', 'mp3',
+        ytArgs.unshift('-x', '--audio-format', 'mp3',
+      '--ffmpeg-location', '/usr/local/bin',
       '--postprocessor-args', 'ffmpeg:-threads 2');
   }
   ytArgs.push(url);
@@ -556,7 +557,7 @@ app.listen(PORT, '0.0.0.0', () => {
   // Bağımlılık kontrolleri
   const deps = [
     ['yt-dlp', null, 'YouTube indirici'],
-        ['/usr/bin/ffmpeg', null, 'Ses/video dönüştürücü'],
+        ['/usr/local/bin/ffmpeg', null, 'Ses/video dönüştürücü'],
     ['python3', ['--version'], 'Python (Spotify için)'],
   ];
   for (const [cmd, args, label] of deps) {
