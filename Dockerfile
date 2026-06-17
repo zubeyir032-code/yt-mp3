@@ -1,9 +1,12 @@
 FROM node:20-bookworm
 
-# force rebuild 2
-RUN apt-get update && apt-get install -y ffmpeg python3 python3-pip curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl python3 python3-pip && rm -rf /var/lib/apt/lists/*
 
-RUN which ffmpeg && ffmpeg -version && echo "FFMPEG_PATH=$(which ffmpeg)"
+# Static ffmpeg (johnvansickle)
+RUN curl -sL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar xJ && \
+    cp ffmpeg-*-amd64-static/ffmpeg /usr/local/bin/ && \
+    cp ffmpeg-*-amd64-static/ffprobe /usr/local/bin/ && \
+    rm -rf ffmpeg-*-amd64-static
 
 RUN pip3 install --break-system-packages yt-dlp spotapi --quiet
 
