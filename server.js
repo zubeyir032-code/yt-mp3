@@ -458,6 +458,8 @@ function processBatchItem(batchId, idx, onDone) {
         '--concurrent-fragments', '5');
     } else {
       ytArgs.unshift('-x', '--audio-format', 'mp3',
+                             '--ffmpeg-location', '/usr/bin',
+
         '--postprocessor-args', 'ffmpeg:-threads 2');
     }
     ytArgs.push(url);
