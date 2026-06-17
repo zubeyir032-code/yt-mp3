@@ -543,11 +543,12 @@ app.get('/health', (req, res) => res.send('OK'));
 // Başlangıç kontrolleri
 function checkDep(cmd, args, name) {
   try {
-    const r = spawnSync(cmd, args || ['--version'], { timeout: 10000, encoding: 'utf8' });
-    const ok = r.status === 0;
-    if (!ok) console.error(`  [DEBUG] ${cmd} çıkış kodu: ${r.status}, stderr: ${(r.stderr||'').trim().slice(0,200)}`);
-    return { ok, ver: (r.stdout || '').trim().split('\n')[0] };
-  } catch (e) { console.error(`  [DEBUG] ${cmd} hata: ${e.message}`); return { ok: false }; }
+    const exists = fs.existsSync(cmd) || spawnSync('which', [cmd], { encoding: 'utf8' }).status === 0;
+    if (!exists) return { ok: false, ver: 'bulunamadı' };
+    const r = spawnSync(cmd, args || ['-version'], { timeout: 10000, encoding: 'utf8' });
+    const ver = (r.stdout || r.stderr || '').trim().split('\n')[0] || '?';
+    return { ok: true, ver };
+  } catch (e) { return { ok: false, ver: e.message }; }
 }
 
 const os = require('os');
